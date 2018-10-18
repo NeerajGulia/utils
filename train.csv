@@ -1,0 +1,4 @@
+filename,file_size,file_attributes,region_count,region_id,region_shape_attributes,region_attributes
+1.jpg,291230,{},1,0,"{""name"":""rect"",""x"":377,""y"":52,""width"":161,""height"":143}","{""label"":""person""}"
+2.jpg,290640,{},2,0,"{""name"":""rect"",""x"":365,""y"":19,""width"":167,""height"":163}","{""label"":""person""}"
+3.jpg,320702,{},1,0,"{""name"":""rect"",""x"":290,""y"":241,""width"":142,""height"":115}","{""label"":""person""}"

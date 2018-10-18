@@ -1,0 +1,13 @@
+-----------------------------
+train model
+-----------------------------
+
+python legacy\train.py --logtostderr --train_dir D:\Github\models\research\object_detection\neeraj\models\ssd_mobilenet_V2\output --pipeline_config_path D:\Github\models\research\object_detection\neeraj\models\ssd_mobilenet_V2\ssd_mobilenet_v2_coco.config
+
+python legacy\train.py --logtostderr --train_dir D:\Github\models\research\object_detection\neeraj\models\faster_rcnn_inception_v2\output --pipeline_config_path D:\Github\models\research\object_detection\neeraj\models\faster_rcnn_inception_v2\faster_rcnn_inception_v2_coco.config
+
+-----------------------------
+export frozen graph: 
+-----------------------------
+
+python export_inference_graph.py --input_type image_tensor --pipeline_config_path neeraj\models\ssd_mobilenet_V2\ssd_mobilenet_v2_coco.config --trained_checkpoint_prefix neeraj\models\ssd_mobilenet_V2\output\model.ckpt-50.data-00000-of-00001 --output_directory neeraj\models\ssd_mobilenet_V2\inference_graph
