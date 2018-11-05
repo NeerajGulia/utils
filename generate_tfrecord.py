@@ -16,9 +16,10 @@ import io
 import pandas as pd
 import tensorflow as tf
 import json
+import glob
 
 from PIL import Image
-from utils import dataset_util
+from object_detection.utils import dataset_util
 from collections import namedtuple, OrderedDict
 
 flags = tf.app.flags
@@ -42,8 +43,6 @@ def split(df, group):
 
 
 def create_tf_example(group, path):
-    # print('group: ', group)
-    # print('path: ', path)
     with tf.gfile.GFile(os.path.join(path, '{}'.format(group.filename)), 'rb') as fid:
         encoded_jpg = fid.read()
     encoded_jpg_io = io.BytesIO(encoded_jpg)
@@ -60,21 +59,29 @@ def create_tf_example(group, path):
     classes = []
 
     for index, row in group.object.iterrows():
-        region = json.loads(row['region_shape_attributes'])
-        label = json.loads(row['region_attributes'])
-        xmins.append(region['x'] / width)
-        xmaxs.append((region['x'] + region['width']) / width)
-        ymins.append(region['y'] / height)
-        ymaxs.append((region['y'] + region['height']) / height)
-        classes_text.append(label['label'].encode('utf8'))
-        classes.append(class_text_to_int(label['label']))
+        regionCount = row['region_count']
+        if regionCount > 0:
+            region = json.loads(row['region_shape_attributes'])
+            label = json.loads(row['region_attributes'])
+            x = region['x']
+            y = region['y']
+            if x < 0:
+              x = -x
+            if y < 0:
+              y = -y
+            xmins.append(x / width)
+            xmaxs.append((x + region['width']) / width)
+            ymins.append(y / height)
+            ymaxs.append((y + region['height']) / height)
+            classes_text.append(label['label'].encode('utf8'))
+            classes.append(class_text_to_int(label['label']))
     
-    print('xmins: ', xmins)
-    print('xmaxs: ', xmaxs)
-    print('ymins: ', ymins)
-    print('ymaxs: ', ymaxs)
-    print('classes_text: ', classes_text)
-    print('classes: ', classes)
+    #print('x1mins: ', xmins)
+    #print('xmaxs: ', xmaxs)
+    #print('ymins: ', ymins)
+    #print('ymaxs: ', ymaxs)
+    #print('classes_text: ', classes_text)
+    #print('classes: ', classes)
     tf_example = tf.train.Example(features=tf.train.Features(feature={
         'image/height': dataset_util.int64_feature(height),
         'image/width': dataset_util.int64_feature(width),
@@ -94,12 +101,17 @@ def create_tf_example(group, path):
 
 def main(_):
     writer = tf.python_io.TFRecordWriter(FLAGS.output_path)
-    path = os.path.join(os.getcwd(), FLAGS.image_dir)
-    examples = pd.read_csv(FLAGS.csv_input)
-    grouped = split(examples, 'filename')
-    for group in grouped:
-        tf_example = create_tf_example(group, path)
-        writer.write(tf_example.SerializeToString())
+    imgDirPath = os.path.join(os.getcwd(), FLAGS.image_dir)
+    files = sorted(glob.glob(os.path.join(FLAGS.csv_input , "*.csv")))
+    for f in files:
+      print('reading file: ', f)
+      folderName = os.path.basename(f).split('.')[0]
+      examples = pd.read_csv(f)
+      grouped = split(examples, 'filename')
+      path = os.path.join(imgDirPath, folderName)
+      for group in grouped:
+          tf_example = create_tf_example(group, path)          
+          writer.write(tf_example.SerializeToString())
 
     writer.close()
     output_path = os.path.join(os.getcwd(), FLAGS.output_path)
