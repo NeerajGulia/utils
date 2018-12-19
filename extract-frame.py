@@ -16,7 +16,7 @@ success, image = vidcap.read()
 count = 0
 directoryname = args["output"]
 while success:
-  cv2.imwrite(os.path.join(directoryname, "%d.png" % count), image)     # save frame as JPEG file      
+  cv2.imwrite(os.path.join(directoryname, "%d.jpg" % count), image)     # save frame as JPEG file      
   success,image = vidcap.read()
   count += 1
   if count % 50 == 0:
