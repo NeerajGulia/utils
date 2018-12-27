@@ -34,3 +34,73 @@ if row_label == 'Haldirams sev murmura':
     return 17
 else:
     None
+
+
+item {
+    id: 1
+    name: 'ACT II Nachoz Salted'
+}
+item {
+    id: 2
+    name: 'ACT II Nachoz Tomato'
+}
+item {
+    id: 3
+    name: 'Makhana walas salt and paper'
+}
+item {
+    id: 4
+    name: 'Makhana walas cream and onion'
+}
+item {
+    id: 5
+    name: 'Haldirams Moong Dal'
+}
+item {
+    id: 6
+    name: 'Haldirams chatpata dal'
+}
+item {
+    id: 7
+    name: 'Haldirams bhujia sev'
+}
+item {
+    id: 8
+    name: 'Haldirams panchratan mixture'
+}
+item {
+    id: 9
+    name: 'Haldirams lahsun sev'
+}
+item {
+    id: 10
+    name: 'Haldirams phalhari chiwda large'
+}
+item {
+    id: 11
+    name: 'Haldirams phalhari chiwda small'
+}
+item {
+    id: 12
+    name: 'Haldirams lite chiwda'
+}
+item {
+    id: 13
+    name: 'Haldirams khatta meetha'
+}
+item {
+    id: 14
+    name: 'Haldirams mixture'
+}
+item {
+    id: 15
+    name: 'Haldirams punjabi tadka'
+}
+item {
+    id: 16
+    name: 'Haldirams mathri'
+}
+item {
+    id: 17
+    name: 'Haldirams sev murmura'
+}
